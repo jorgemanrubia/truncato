@@ -1,4 +1,4 @@
-truncato
-========
+# truncato
 
-A tool for truncating HTML strings efficiently
+*truncato* is a Ruby library for truncating HTML strings keeping a valid HTML markup.
+
