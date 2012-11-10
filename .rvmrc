@@ -3,8 +3,8 @@
 # This is an RVM Project .rvmrc file, used to automatically load the ruby
 # development environment upon cd'ing into the directory
 
-# First we specify our desired <ruby>[@<gemset>], the @gemset name is optional,
-# Only full ruby name is supported here, for short names use:
+# First we specify our desired <ruby>[@<gemset>], the @gemset string is optional,
+# Only full ruby string is supported here, for short names use:
 #     echo "rvm use 1.9.2" > .rvmrc
 environment_id="ruby-1.9.2-p320"
 
