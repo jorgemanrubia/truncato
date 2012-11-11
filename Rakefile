@@ -47,3 +47,20 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+$:.unshift File.join(File.dirname(__FILE__), 'benchmark')
+
+require 'nokogiri'
+require 'truncato'
+require 'truncato_benchmark'
+
+namespace :truncato do
+  task :benchmark do
+    Truncato::BenchmarkRunner.new.run
+  end
+
+  task :vendor_compare do
+    Truncato::BenchmarkRunner.new.run_comparison
+  end
+
+end

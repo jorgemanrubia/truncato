@@ -1,3 +1,4 @@
+# Adapter for comparing https://github.com/nono/HTML-Truncator
 module Truncato
   class VendorHtmlTruncatorAdapter
     def self.truncate string, options
