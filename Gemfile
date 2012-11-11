@@ -20,3 +20,7 @@ end
 group :test do
   gem "rspec", "~> 2.11.0"
 end
+
+group :benchrmark do
+  gem 'html_truncator'
+end

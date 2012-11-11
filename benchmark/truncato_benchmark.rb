@@ -4,6 +4,7 @@ require 'rubygems'
 require 'bundler'
 require 'nokogiri'
 require 'truncato'
+require 'html_truncator'
 require 'benchmark'
 
 Bundler.setup
