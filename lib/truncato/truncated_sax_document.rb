@@ -12,27 +12,25 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   def start_element name, attributes
     return if @max_length_reached
-    @closing_tags.unshift name
+    @closing_tags.push name
     append_to_truncated_string opening_tag(name)
   end
 
   def characters string
-    puts string
     return if @max_length_reached
-    remaining_length = max_length - @estimated_length
+    remaining_length = max_length - @estimated_length - 1
     string = truncate_string(string, remaining_length) if string.length > remaining_length
     append_to_truncated_string string
   end
 
   def end_element name
     return if @max_length_reached
-    increase_estimated_length name.length + 3
     @closing_tags.pop
     append_to_truncated_string closing_tag(name)
   end
 
   def end_document
-    append_closing_tags if max_length_reached
+    close_truncated_document if max_length_reached
   end
 
   private
@@ -56,11 +54,17 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def check_max_length_reached
-    @check_max_length_reached = true if @estimated_length >= max_length
+    @max_length_reached = true if @estimated_length >= max_length
   end
 
   def truncate_string string, remaining_length
+    @tail_appended = true
     "#{string[0..remaining_length]}#{tail}"
+  end
+
+  def close_truncated_document
+    append_to_truncated_string tail unless @tail_appended
+    append_closing_tags
   end
 
   def append_closing_tags

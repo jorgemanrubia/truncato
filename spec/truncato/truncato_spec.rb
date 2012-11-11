@@ -8,7 +8,19 @@ describe "Truncato" do
   end
 
   describe "html strings" do
-    it_should_truncate "simple html text with shorter string", with: {max_length: 3}, source: "<p>some text</p>", expected: "<p>s...</p>"
+    it_should_truncate "html text with a tag", with: {max_length: 4}, source: "<p>some text</p>", expected: "<p>s...</p>"
+    it_should_truncate "html text with nested tags (first node)", with: {max_length: 9},
+                       source: "<div><p>some text 1</p><p>some text 2</p></div>",
+                       expected: "<div><p>s...</p></div>"
+    it_should_truncate "html text with nested tags (second node)", with: {max_length: 33},
+                       source: "<div><p>some text 1</p><p>some text 2</p></div>",
+                       expected: "<div><p>some text 1</p><p>some te...</p></div>"
+    it_should_truncate "html text with nested tags (empty contents)", with: {max_length: 3},
+                       source: "<div><p>some text 1</p><p>some text 2</p></div>",
+                       expected: "<div>...</div>"
+    #it_should_truncate "html text with entities considering their length", with: {max_length: 5},
+    #                   source: "<p>&gt;some text</p>",
+    #                   expected: "<p>&gt;s...</div>"
   end
 
 end
