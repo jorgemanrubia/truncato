@@ -10,6 +10,7 @@ gemspec
 # Include everything needed to run rake, tests, features, etc.
 
 gem 'nokogiri', "~> 1.5.5"
+gem 'htmlentities', "~> 4.3.1"
 
 group :development do
   gem "bundler", "~> 1.2.1"

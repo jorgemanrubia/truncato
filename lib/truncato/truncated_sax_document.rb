@@ -2,6 +2,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   attr_reader :truncated_string, :max_length, :max_length_reached, :tail
 
   def initialize(max_length, tail)
+    @html_coder = HTMLEntities.new
     @truncated_string = ""
     @closing_tags = []
     @max_length = max_length
@@ -16,11 +17,11 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     append_to_truncated_string opening_tag(name)
   end
 
-  def characters string
+  def characters decoded_string
     return if @max_length_reached
     remaining_length = max_length - @estimated_length - 1
-    string = truncate_string(string, remaining_length) if string.length > remaining_length
-    append_to_truncated_string string
+    string_to_append = decoded_string.length > remaining_length ? truncate_string(decoded_string, remaining_length) : decoded_string
+    append_to_truncated_string @html_coder.encode(string_to_append), string_to_append.length
   end
 
   def end_element name
@@ -35,9 +36,9 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   private
 
-  def append_to_truncated_string(string)
+  def append_to_truncated_string string, overriden_length=nil
     @truncated_string << string
-    increase_estimated_length string.length
+    increase_estimated_length overriden_length || string.length
   end
 
   def opening_tag name
