@@ -6,11 +6,15 @@
 
 In your `Gemfile`:
 
-  gem 'truncato'
+```ruby
+gem 'truncato'
+```
 
 ## Usage
 
-	Truncato.truncate "<p>Hi there</p>", max_length: 8, tail: "..." => "<p>Hi...</p>"
+```ruby
+Truncato.truncate "<p>Hi there</p>", max_length: 8, tail: "..." => "<p>Hi...</p>"
+```
 
 The configuration options are:
 
