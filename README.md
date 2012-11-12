@@ -22,6 +22,7 @@ The configuration options are:
 * `max_length`: The size, in characters, to truncate (`30` by default)
 * `tail`: The string to append when the truncation occurs ('...' by default)
 * `count_tags`: Boolean value indicating whether tags size should be considered when truncating (`true` by default)
+* `filtered_attributes`: Array of attribute names that will be removed from the output. This allows you to make the truncated string shorter by excluding the content of attributes you can discard in some given context, e.g HTML `style` attribute.
 
 ## Performance
 

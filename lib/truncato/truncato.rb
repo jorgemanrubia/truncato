@@ -2,7 +2,8 @@ module Truncato
   DEFAULT_OPTIONS = {
       max_length: 30,
       count_tags: true,
-      tail: "..."
+      tail: "...",
+      filtered_attributes: []
   }
 
   # Truncates the source XML string and returns the result
@@ -12,6 +13,7 @@ module Truncato
   # @option user_options [Integer] :max_length Maximum length
   # @option user_options [String] :tail text to append when the truncation occurs
   # @option user_options [Boolean] :count_tags `true` for counting tags for truncation, `false` for not counting them
+  # @option user_options [Array<String>] :filtered_attributes Array of names of attributes that should be excluded in the resulting truncated string. This allows you to make the truncated string shorter by excluding the content of attributes you can discard in some given context, e.g HTML `style` attribute.
   # @return [String] the truncated string
   def self.truncate source, user_options={}
     options = DEFAULT_OPTIONS.merge(user_options)

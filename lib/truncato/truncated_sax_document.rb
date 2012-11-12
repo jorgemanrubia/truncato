@@ -1,5 +1,5 @@
 class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
-  attr_reader :truncated_string, :max_length, :max_length_reached, :tail, :count_tags
+  attr_reader :truncated_string, :max_length, :max_length_reached, :tail, :count_tags, :filtered_attributes
 
   def initialize(options)
     init_from_options(options)
@@ -13,7 +13,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   def start_element name, attributes
     return if @max_length_reached
     @closing_tags.push name
-    append_to_truncated_string opening_tag(name), overriden_tag_length
+    append_to_truncated_string opening_tag(name, attributes), overriden_tag_length
   end
 
   def characters decoded_string
@@ -39,6 +39,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     @max_length = options[:max_length]
     @count_tags = options [:count_tags]
     @tail = options[:tail]
+    @filtered_attributes = options[:filtered_attributes] || []
   end
 
   def append_to_truncated_string string, overriden_length=nil
@@ -46,8 +47,19 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     increase_estimated_length(overriden_length || string.length)
   end
 
-  def opening_tag name
-    "<#{name}>"
+  def opening_tag name, attributes
+    attributes_string = attributes_to_string(attributes)
+    "<#{name}#{attributes_string}>"
+  end
+
+  def attributes_to_string(attributes)
+    return "" if attributes.empty?
+    attributes_string = attributes.inject(' ') do |string, attribute|
+      key, value = attribute
+      next string  if @filtered_attributes.include?(key)
+      string << "#{key}='#{value}' "
+    end
+    attributes_string.rstrip
   end
 
   def closing_tag name
