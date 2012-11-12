@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jorge Manrubia"]
-  s.date = "2012-11-10"
+  s.date = "2012-11-12"
   s.description = "Ruby tool for truncating HTML strings keeping a valid HTML markup"
   s.email = "jorge.manrubia@gmail.com"
   s.extra_rdoc_files = [
@@ -17,7 +17,23 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
-    "README.md"
+    ".rvmrc",
+    "Gemfile",
+    "Gemfile.lock",
+    "LICENSE.txt",
+    "README.md",
+    "Rakefile",
+    "VERSION",
+    "benchmark/truncato/benchmark_runner.rb",
+    "benchmark/truncato/vendor/vendor_html_truncator_adapter.rb",
+    "benchmark/truncato_benchmark.rb",
+    "lib/truncato.rb",
+    "lib/truncato/truncated_sax_document.rb",
+    "lib/truncato/truncato.rb",
+    "spec/spec_helper.rb",
+    "spec/support/spec_helpers/truncato_macros.rb",
+    "spec/truncato/truncato_spec.rb",
+    "truncato.gemspec"
   ]
   s.homepage = "https://github.com/jorgemanrubia/truncato"
   s.licenses = ["MIT"]
@@ -29,13 +45,28 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<truncato>, [">= 0"])
+      s.add_runtime_dependency(%q<nokogiri>, ["~> 1.5.5"])
+      s.add_runtime_dependency(%q<htmlentities>, ["~> 4.3.1"])
+      s.add_development_dependency(%q<bundler>, ["~> 1.2.1"])
+      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_development_dependency(%q<bundler>, ["~> 1.2.1"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
     else
+      s.add_dependency(%q<truncato>, [">= 0"])
+      s.add_dependency(%q<nokogiri>, ["~> 1.5.5"])
+      s.add_dependency(%q<htmlentities>, ["~> 4.3.1"])
+      s.add_dependency(%q<bundler>, ["~> 1.2.1"])
+      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_dependency(%q<bundler>, ["~> 1.2.1"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     end
   else
+    s.add_dependency(%q<truncato>, [">= 0"])
+    s.add_dependency(%q<nokogiri>, ["~> 1.5.5"])
+    s.add_dependency(%q<htmlentities>, ["~> 4.3.1"])
+    s.add_dependency(%q<bundler>, ["~> 1.2.1"])
+    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     s.add_dependency(%q<bundler>, ["~> 1.2.1"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
   end
