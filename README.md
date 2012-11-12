@@ -9,17 +9,19 @@ In your `Gemfile`:
 ```ruby
 gem 'truncato'
 ```
-
+ 
 ## Usage
 
 ```ruby
-Truncato.truncate "<p>Hi there</p>", max_length: 8, tail: "..." => "<p>Hi...</p>"
+Truncato.truncate "<p>some text</p>", max_length: 4 => "<p>s...</p>"
+Truncato.truncate "<p>some text</p>", max_length: 4, count_tags: false => "<p>some...</p>"
 ```
 
 The configuration options are:
 
-* `max_length`: The size, in characters, to truncate (30 by default)
+* `max_length`: The size, in characters, to truncate (`30` by default)
 * `tail`: The string to append when the truncation occurs ('...' by default)
+* `count_tags`: Boolean value indicating whether tags size should be considered when truncating (`true` by default)
 
 ## Performance
 
