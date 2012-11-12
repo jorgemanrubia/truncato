@@ -49,7 +49,7 @@ The results comparing truncato with other libs:
     <th><a href="https://github.com/nono/HTML-Truncator">HTML Truncator</a></th>
   </tr>
   <tr>
-    <th>Time for truncating from 4MB to 4KB</th>
+    <th>Time for truncating a 4MB XML document to 4KB</th>
     <td>1.5 s</td>
     <td>20 s</td>
     <td>220 s</td>
