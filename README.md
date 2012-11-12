@@ -56,7 +56,7 @@ The results comparing truncato with other libs:
   </tr>
 </table>
 
-# Running the tests
+## Running the tests
 
 ```ruby
 rake spec
