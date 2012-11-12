@@ -5,6 +5,14 @@ module Truncato
       tail: "..."
   }
 
+  # Truncates the source XML string and returns the result
+  #
+  # @param [String] source the XML source to truncate
+  # @param [Hash] user_options truncation options
+  # @option user_options [Integer] :max_length Maximum length
+  # @option user_options [String] :tail text to append when the truncation occurs
+  # @option user_options [Boolean] :count_tags `true` for counting tags for truncation, `false` for not counting them
+  # @return [String] the truncated string
   def self.truncate source, user_options={}
     options = DEFAULT_OPTIONS.merge(user_options)
     self.truncate_html(source, options) || self.truncate_no_html(source, options)
@@ -15,7 +23,7 @@ module Truncato
   def self.truncate_html source, options
     truncated_sax_document = TruncatedSaxDocument.new(options)
     parser = Nokogiri::XML::SAX::Parser.new(truncated_sax_document)
-    parser.parse(source){|context| context.replace_entities = false}
+    parser.parse(source) { |context| context.replace_entities = false }
     truncated_string = truncated_sax_document.truncated_string
     truncated_string.empty? ? nil : truncated_string
   end
