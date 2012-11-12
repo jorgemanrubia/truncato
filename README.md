@@ -2,9 +2,9 @@
 
 *truncato* is a Ruby library for truncating HTML strings keeping the markup valid.
 
-## Installation
+## Installing
 
-In your `Gemfile`:
+In your `Gemfile`
 
 ```ruby
 gem 'truncato'
@@ -39,20 +39,27 @@ There is a also a comparison benchmark that tests the previous data with other a
 rake truncato:vendor_compare
 ```
 
-The results can be summarized as follow:
+The results comparing truncato with other libs:
 
 <table>
   <tr>
     <th></th>
+    <th>Truncato</th>
     <th><a href="https://github.com/ianwhite/truncate_html">truncate_html</a></th>
     <th><a href="https://github.com/nono/HTML-Truncator">HTML Truncator</a></th>
-    <th><a>Truncato</a></th>
   </tr>
   <tr>
     <th>Time for truncating from 4MB to 4KB</th>
+    <td>1.5 s</td>
     <td>20 s</td>
     <td>220 s</td>
-    <td>1.5 s</td>
   </tr>
 </table>
+
+# Running the tests
+
+```ruby
+rake spec
+```
+
 
