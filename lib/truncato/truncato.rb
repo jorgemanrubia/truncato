@@ -6,12 +6,13 @@ module Truncato
       filtered_attributes: []
   }
 
-  # Truncates the source XML string and returns the result
+  # Truncates the source XML string and returns the truncated XML. It will keep a valid XML structure
+  # and insert a _tail_ text indicating the position where content were removed (...).
   #
   # @param [String] source the XML source to truncate
   # @param [Hash] user_options truncation options
   # @option user_options [Integer] :max_length Maximum length
-  # @option user_options [String] :tail text to append when the truncation occurs
+  # @option user_options [String] :tail text to append when the truncation happens
   # @option user_options [Boolean] :count_tags `true` for counting tags for truncation, `false` for not counting them
   # @option user_options [Array<String>] :filtered_attributes Array of names of attributes that should be excluded in the resulting truncated string. This allows you to make the truncated string shorter by excluding the content of attributes you can discard in some given context, e.g HTML `style` attribute.
   # @return [String] the truncated string
