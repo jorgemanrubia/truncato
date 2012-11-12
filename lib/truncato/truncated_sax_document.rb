@@ -54,12 +54,16 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   def attributes_to_string(attributes)
     return "" if attributes.empty?
-    attributes_string = attributes.inject(' ') do |string, attribute|
+    attributes_string = concatenate_attributes_declaration attributes
+    attributes_string.rstrip
+  end
+
+  def concatenate_attributes_declaration(attributes)
+    attributes.inject(' ') do |string, attribute|
       key, value = attribute
-      next string  if @filtered_attributes.include?(key)
+      next string if @filtered_attributes.include?(key)
       string << "#{key}='#{value}' "
     end
-    attributes_string.rstrip
   end
 
   def closing_tag name
