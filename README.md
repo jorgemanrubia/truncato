@@ -50,9 +50,6 @@ The results can be summarized as follow:
   </tr>
   <tr>
     <th>Time for truncating from 4MB to 4KB (s)</th>
-  </tr>
-  <tr>
-    <th></th>
     <td>20</td>
     <td>220</td>
     <td>1.5</td>
