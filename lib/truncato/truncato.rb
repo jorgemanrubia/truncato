@@ -1,6 +1,7 @@
 module Truncato
   DEFAULT_OPTIONS = {
       max_length: 30,
+      count_tags: true,
       tail: "..."
   }
 
@@ -12,7 +13,7 @@ module Truncato
   private
 
   def self.truncate_html source, options
-    truncated_sax_document = TruncatedSaxDocument.new(options[:max_length], options[:tail])
+    truncated_sax_document = TruncatedSaxDocument.new(options)
     parser = Nokogiri::XML::SAX::Parser.new(truncated_sax_document)
     parser.parse(source){|context| context.replace_entities = false}
     truncated_string = truncated_sax_document.truncated_string

@@ -48,7 +48,7 @@ module Truncato
     def run_with(truncation_klass)
       puts "Running benchmark for #{truncation_klass}..."
       truncated_string = ""
-      result = Benchmark.measure { truncated_string = truncation_klass.truncate synthetic_xml, max_length: TRUNCATION_LENGTH }
+      result = Benchmark.measure { truncated_string = truncation_klass.truncate synthetic_xml, max_length: TRUNCATION_LENGTH, count_tags: true }
       {truncated_length: truncated_string.length, time: result.total}
     end
 
