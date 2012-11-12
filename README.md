@@ -49,10 +49,10 @@ The results can be summarized as follow:
     <th><a>Truncato</a></th>
   </tr>
   <tr>
-    <th>Time for truncating from 4MB to 4KB (s)</th>
-    <td>20</td>
-    <td>220</td>
-    <td>1.5</td>
+    <th>Time for truncating from 4MB to 4KB</th>
+    <td>20 s</td>
+    <td>220 s</td>
+    <td>1.5 s</td>
   </tr>
 </table>
 
