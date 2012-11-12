@@ -2,12 +2,9 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   attr_reader :truncated_string, :max_length, :max_length_reached, :tail, :count_tags, :filtered_attributes
 
   def initialize(options)
-    init_from_options(options)
     @html_coder = HTMLEntities.new
-    @truncated_string = ""
-    @closing_tags = []
-    @estimated_length = 0
-    @max_length_reached = false
+    capture_options(options)
+    init_parsing_state
   end
 
   def start_element name, attributes
@@ -35,11 +32,18 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   private
 
-  def init_from_options(options)
+  def capture_options(options)
     @max_length = options[:max_length]
     @count_tags = options [:count_tags]
     @tail = options[:tail]
     @filtered_attributes = options[:filtered_attributes] || []
+  end
+
+  def init_parsing_state
+    @truncated_string = ""
+    @closing_tags = []
+    @estimated_length = 0
+    @max_length_reached = false
   end
 
   def append_to_truncated_string string, overriden_length=nil
