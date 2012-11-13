@@ -66,7 +66,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     attributes.inject(' ') do |string, attribute|
       key, value = attribute
       next string if @filtered_attributes.include?(key)
-      string << "#{key}='#{value}' "
+      string << "#{key}='#{@html_coder.encode(value)}' "
     end
   end
 
