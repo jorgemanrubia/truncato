@@ -5,6 +5,7 @@ require 'bundler'
 require 'nokogiri'
 require 'truncato'
 require 'html_truncator'
+require 'peppercorn'
 require 'benchmark'
 
 Bundler.setup

@@ -48,12 +48,14 @@ The results comparing truncato with other libs:
     <th>Truncato</th>
     <th><a href="https://github.com/ianwhite/truncate_html">truncate_html</a></th>
     <th><a href="https://github.com/nono/HTML-Truncator">HTML Truncator</a></th>
+    <th><a href="https://github.com/wadewest/peppercorn">peppercorn</a></th>
   </tr>
   <tr>
     <th>Time for truncating a 4MB XML document to 4KB</th>
     <td>1.5 s</td>
     <td>20 s</td>
     <td>220 s</td>
+    <td>232 s</td>
   </tr>
 </table>
 

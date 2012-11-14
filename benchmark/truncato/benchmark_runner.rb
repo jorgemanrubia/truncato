@@ -15,8 +15,9 @@ module Truncato
     end
 
     def run_comparison
-      run_suite [Truncato, VendorHtmlTruncatorAdapter]
+      run_suite [Truncato, VendorHtmlTruncatorAdapter, PeppercornAdapter]
     end
+
 
     private
 

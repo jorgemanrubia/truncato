@@ -23,4 +23,5 @@ end
 
 group :benchrmark do
   gem 'html_truncator'
+  gem 'peppercorn'
 end
