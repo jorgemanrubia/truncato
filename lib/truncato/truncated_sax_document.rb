@@ -1,4 +1,5 @@
 require 'nokogiri'
+require 'htmlentities'
 
 class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   attr_reader :truncated_string, :max_length, :max_length_reached, :tail, :count_tags, :filtered_attributes
