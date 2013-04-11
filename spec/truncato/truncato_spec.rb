@@ -27,6 +27,10 @@ describe "Truncato" do
     it_should_truncate "html text with special html entioes", with: {max_length: 5},
                        source: "<p>&gt;some text</p>",
                        expected: "<p>&gt;s...</p>"
+
+    it_should_truncate "html text with siblings tags", with: {max_length: 51},
+                       source: "<div>some text 0</div><div><p>some text 1</p><p>some text 2</p></div>",
+                       expected: "<div>some text 0</div><div><p>some text 1</p><p>some te...</p></div>"
   end
 
   describe "html attributes" do
