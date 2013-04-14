@@ -6,6 +6,8 @@ module Truncato
       filtered_attributes: []
   }
 
+  ARTIFICIAL_ROOT_NAME = '__truncato_root__'
+
   # Truncates the source XML string and returns the truncated XML. It will keep a valid XML structure
   # and insert a _tail_ text indicating the position where content were removed (...).
   #
@@ -24,11 +26,19 @@ module Truncato
   private
 
   def self.truncate_html source, options
+    self.do_truncate_html(source, options) ? self.do_truncate_html(with_articial_root(source), options) : nil
+  end
+
+  def self.do_truncate_html source, options
     truncated_sax_document = TruncatedSaxDocument.new(options)
     parser = Nokogiri::XML::SAX::Parser.new(truncated_sax_document)
     parser.parse(source) { |context| context.replace_entities = false }
     truncated_string = truncated_sax_document.truncated_string
     truncated_string.empty? ? nil : truncated_string
+  end
+
+  def self.with_articial_root(source)
+    "<#{ARTIFICIAL_ROOT_NAME}>#{source}</#{ARTIFICIAL_ROOT_NAME}>"
   end
 
   def self.truncate_no_html source, options

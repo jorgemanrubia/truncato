@@ -11,7 +11,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def start_element name, attributes
-    return if @max_length_reached
+    return if @max_length_reached || artificial_root_name?(name)
     @closing_tags.push name
     append_to_truncated_string opening_tag(name, attributes), overriden_tag_length
   end
@@ -24,7 +24,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def end_element name
-    return if @max_length_reached
+    return if @max_length_reached || artificial_root_name?(name)
     @closing_tags.pop
     append_to_truncated_string closing_tag(name), overriden_tag_length
   end
@@ -102,5 +102,9 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   def overriden_tag_length
     @count_tags ? nil : 0
+  end
+
+  def artificial_root_name?(name)
+    name == Truncato::ARTIFICIAL_ROOT_NAME
   end
 end
