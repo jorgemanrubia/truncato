@@ -12,6 +12,8 @@ describe "Truncato" do
 
     it_should_truncate "html text with a tag (not counting tags)", with: {max_length: 4, count_tags: false}, source: "<p>some text</p>", expected: "<p>some...</p>"
 
+    it_should_truncate "html text with a tag where tail is inserted between closing tags ", with: {max_length: 4, count_tags: false, tail_before_final_tag: true}, source: "<p><span>some text</span></p>", expected: "<p><span>some</span>...</p>"
+
     it_should_truncate "html text with nested tags (first node)", with: {max_length: 9},
                        source: "<div><p>some text 1</p><p>some text 2</p></div>",
                        expected: "<div><p>s...</p></div>"

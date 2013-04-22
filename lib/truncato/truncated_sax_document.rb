@@ -40,6 +40,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     @count_tags = options [:count_tags]
     @tail = options[:tail]
     @filtered_attributes = options[:filtered_attributes] || []
+    @tail_before_final_tag = options[:tail_before_final_tag]
   end
 
   def init_parsing_state
@@ -87,11 +88,16 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def truncate_string string, remaining_length
-    @tail_appended = true
-    "#{string[0..remaining_length]}#{tail}"
+    if @tail_before_final_tag
+      string[0..remaining_length]
+    else
+      @tail_appended = true
+      "#{string[0..remaining_length]}#{tail}"
+    end
   end
 
   def close_truncated_document
+    append_tail_between_closing_tags if @tail_before_final_tag
     append_to_truncated_string tail unless @tail_appended
     append_closing_tags
   end
@@ -106,5 +112,9 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   def artificial_root_name?(name)
     name == Truncato::ARTIFICIAL_ROOT_NAME
+  end
+
+  def append_tail_between_closing_tags
+    append_to_truncated_string closing_tag(@closing_tags.delete_at (@closing_tags.length - 1)) if @closing_tags.length > 1
   end
 end
