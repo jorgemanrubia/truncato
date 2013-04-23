@@ -26,7 +26,7 @@ module Truncato
   private
 
   def self.truncate_html source, options
-    self.do_truncate_html(source, options) ? self.do_truncate_html(with_articial_root(source), options) : nil
+    self.do_truncate_html(source, options) ? self.do_truncate_html(with_artificial_root(source), options) : nil
   end
 
   def self.do_truncate_html source, options
@@ -37,7 +37,7 @@ module Truncato
     truncated_string.empty? ? nil : truncated_string
   end
 
-  def self.with_articial_root(source)
+  def self.with_artificial_root(source)
     "<#{ARTIFICIAL_ROOT_NAME}>#{source}</#{ARTIFICIAL_ROOT_NAME}>"
   end
 

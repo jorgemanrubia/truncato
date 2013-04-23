@@ -9,7 +9,7 @@ In your `Gemfile`
 ```ruby
 gem 'truncato'
 ```
- 
+
 ## Usage
 
 ```ruby
@@ -23,12 +23,15 @@ The configuration options are:
 * `tail`: The string to append when the truncation occurs ('...' by default)
 * `count_tags`: Boolean value indicating whether tags size should be considered when truncating (`true` by default)
 * `filtered_attributes`: Array of attribute names that will be removed from the output. This allows you to make the truncated string shorter by excluding the content of attributes you can discard in some given context, e.g HTML `style` attribute.
+* `tail_before_final_tag`: Boolean value indicating whether to apply a tail before the final closing tag (`false` by default)
+* `comments`: Boolean value indicating whether to include comments in parsed results (`false` by default)
+* `count_tail`: Boolean value indicating whether to include the tail within the bounds of the provided max length (`false` by default)
 
 ## Performance
 
 Truncato was designed with performance in mind. Its main motivation was that existing libs couldn't truncate a multiple-MB document into a few-KB one in a reasonable time. It uses the [Nokogiri](http://nokogiri.org/) SAX parser.
 
-There is a benchmark included that generates a synthetic XML of 4MB and truncates it to 400 KB. You can run the benchmark using 
+There is a benchmark included that generates a synthetic XML of 4MB and truncates it to 400 KB. You can run the benchmark using
 
 ```ruby
 rake truncato:benchmark
