@@ -47,6 +47,11 @@ describe "Truncato" do
     it_should_truncate "html text with a tag (counting tail and including tail before final tag)", with: {max_length: 16, count_tail: true, count_tags: false, tail_before_final_tag: true},
                         source: "<p>some text</p><div><span>some other text</span></div>",
                         expected: "<p>some text</p><div><span>some</span>...</div>"
+
+    it_should_truncate "html text, counting special html characters as one character",
+                        with: {max_length: 16, count_tail: true, count_tags: false, tail_before_final_tag: true, tail: '&hellip;'},
+                        source: "<p>some text</p><div><span>some other text</span></div>",
+                        expected: "<p>some text</p><div><span>some o</span>&hellip;</div>"
   end
 
   describe "insert tail between two or more final tags" do

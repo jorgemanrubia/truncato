@@ -63,8 +63,12 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   def init_parsing_state
     @truncated_string   = ""
     @closing_tags       = []
-    @estimated_length   = @count_tail ? tail.length : 0
+    @estimated_length   = @count_tail ? tail_length : 0
     @max_length_reached = false
+  end
+
+  def tail_length
+    tail.match(/^&\w+;$/).nil? ? tail.length : 1
   end
 
   def single_tag_element? name
