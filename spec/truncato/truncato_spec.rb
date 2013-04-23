@@ -12,8 +12,6 @@ describe "Truncato" do
 
     it_should_truncate "html text with a tag (not counting tags)", with: {max_length: 4, count_tags: false}, source: "<p>some text</p>", expected: "<p>some...</p>"
 
-    it_should_truncate "html text with a tag where tail is inserted between closing tags ", with: {max_length: 4, count_tags: false, tail_before_final_tag: true}, source: "<p><span>some text</span></p>", expected: "<p><span>some</span>...</p>"
-
     it_should_truncate "html text with nested tags (first node)", with: {max_length: 9},
                        source: "<div><p>some text 1</p><p>some text 2</p></div>",
                        expected: "<div><p>s...</p></div>"
@@ -33,6 +31,46 @@ describe "Truncato" do
     it_should_truncate "html text with siblings tags", with: {max_length: 51},
                        source: "<div>some text 0</div><div><p>some text 1</p><p>some text 2</p></div>",
                        expected: "<div>some text 0</div><div><p>some text 1</p><p>som...</p></div>"
+  end
+
+  describe "insert tail between two or more final tags" do
+    it_should_truncate "html text as normal when tail_before_final_tag option is not set",
+                        with: {max_length: 4, count_tags: false},
+                        source: "<p><span>some text</span>some more text</p>",
+                        expected: "<p><span>some...</span></p>"
+
+    it_should_truncate "html text when tail_before_final_tag: true by inserting tail before the final tag, and after any other closing tags",
+                        with: {max_length: 4, count_tags: false, tail_before_final_tag: true},
+                        source: "<p><span>some text</span>some more text</p>",
+                        expected: "<p><span>some</span>...</p>"
+  end
+
+  describe "single html tag elements" do
+    it_should_truncate "html text with <br /> element without adding a closing tag", with: {max_length: 9},
+                       source: "<div><p><br />some text 1</p><p>some text 2</p></div>",
+                       expected: "<div><p><br />...</p></div>"
+
+    it_should_truncate "html text with <img /> element without adding a closing tag", with: {max_length: 9},
+                       source: "<div><p><img src='some_path' />some text 1</p><p>some text 2</p></div>",
+                       expected: "<div><p><img src='some_path' />...</p></div>"
+  end
+
+  describe "comment html element" do
+    it_should_truncate "html text and ignore <!-- a comment --> element by default", with: {max_length: 20},
+                       source: "<!-- a comment --><p>some text 1</p>",
+                       expected: "<p>some text 1</p>"
+
+    it_should_truncate "html text with <!-- a comment --> element", with: {max_length: 30, comments: true},
+                       source: "<!-- a comment --><p>some text 1</p>",
+                       expected: "<!-- a comment --><p>some text...</p>"
+
+    it_should_truncate "html text with <!-- a comment --> element that exceeds the max_length", with: {max_length: 5, comments: true},
+                       source: "<!-- a comment --><p>some text 1</p>",
+                       expected: "<!-- ...-->"
+
+    it_should_truncate "html text with <!-- a comment --> element with other elements that exceeds max_length", with: {max_length: 20, comments: true},
+                       source: "<!-- a comment --><p>some text 1</p>",
+                       expected: "<!-- a comment --><p>...</p>"
   end
 
   describe "html attributes" do

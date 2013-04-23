@@ -6,13 +6,13 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   def initialize(options)
     @html_coder = HTMLEntities.new
-    capture_options(options)
+    capture_options options
     init_parsing_state
   end
 
   def start_element name, attributes
     return if @max_length_reached || artificial_root_name?(name)
-    @closing_tags.push name
+    @closing_tags.push name unless single_tag_element? name
     append_to_truncated_string opening_tag(name, attributes), overriden_tag_length
   end
 
@@ -23,10 +23,25 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     append_to_truncated_string @html_coder.encode(string_to_append), string_to_append.length
   end
 
+  def comment string
+    if @comments
+      return if @max_length_reached
+      remaining_length = max_length - @estimated_length - 1
+      string_to_append = comment_tag(string).length > remaining_length ? truncate_comment(comment_tag(string), remaining_length) : comment_tag(string)
+      append_to_truncated_string string_to_append
+    end
+  end
+
+  def comment_tag comment
+    "<!--#{comment}-->"
+  end
+
   def end_element name
     return if @max_length_reached || artificial_root_name?(name)
-    @closing_tags.pop
-    append_to_truncated_string closing_tag(name), overriden_tag_length
+    unless single_tag_element? name
+      @closing_tags.pop
+      append_to_truncated_string closing_tag(name), overriden_tag_length
+    end
   end
 
   def end_document
@@ -36,18 +51,23 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   private
 
   def capture_options(options)
-    @max_length = options[:max_length]
-    @count_tags = options [:count_tags]
-    @tail = options[:tail]
-    @filtered_attributes = options[:filtered_attributes] || []
-    @tail_before_final_tag = options[:tail_before_final_tag]
+    @max_length            = options[:max_length]
+    @count_tags            = options [:count_tags]
+    @tail                  = options[:tail]
+    @filtered_attributes   = options[:filtered_attributes] || []
+    @tail_before_final_tag = options.fetch(:tail_before_final_tag, false)
+    @comments              = options.fetch(:comments, false)
   end
 
   def init_parsing_state
-    @truncated_string = ""
-    @closing_tags = []
-    @estimated_length = 0
+    @truncated_string   = ""
+    @closing_tags       = []
+    @estimated_length   = 0
     @max_length_reached = false
+  end
+
+  def single_tag_element? name
+    ["br", "img"].include? name
   end
 
   def append_to_truncated_string string, overriden_length=nil
@@ -56,21 +76,25 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def opening_tag name, attributes
-    attributes_string = attributes_to_string(attributes)
-    "<#{name}#{attributes_string}>"
+    attributes_string = attributes_to_string attributes
+    if single_tag_element? name
+      "<#{name}#{attributes_string} />"
+    else
+      "<#{name}#{attributes_string}>"
+    end
   end
 
-  def attributes_to_string(attributes)
+  def attributes_to_string attributes
     return "" if attributes.empty?
     attributes_string = concatenate_attributes_declaration attributes
     attributes_string.rstrip
   end
 
-  def concatenate_attributes_declaration(attributes)
+  def concatenate_attributes_declaration attributes
     attributes.inject(' ') do |string, attribute|
       key, value = attribute
-      next string if @filtered_attributes.include?(key)
-      string << "#{key}='#{@html_coder.encode(value)}' "
+      next string if @filtered_attributes.include? key
+      string << "#{key}='#{@html_coder.encode value}' "
     end
   end
 
@@ -96,6 +120,15 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     end
   end
 
+  def truncate_comment string, remaining_length
+    if @tail_before_final_tag
+      string[0..remaining_length]
+    else
+      @tail_appended = true
+      "#{string[0..remaining_length]}#{tail}-->"
+    end
+  end
+
   def close_truncated_document
     append_tail_between_closing_tags if @tail_before_final_tag
     append_to_truncated_string tail unless @tail_appended
@@ -103,14 +136,14 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def append_closing_tags
-    @closing_tags.reverse.each { |name| append_to_truncated_string closing_tag(name) }
+    @closing_tags.reverse.each { |name| append_to_truncated_string closing_tag name }
   end
 
   def overriden_tag_length
     @count_tags ? nil : 0
   end
 
-  def artificial_root_name?(name)
+  def artificial_root_name? name
     name == Truncato::ARTIFICIAL_ROOT_NAME
   end
 
