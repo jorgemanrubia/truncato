@@ -53,6 +53,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   def capture_options(options)
     @max_length            = options[:max_length]
     @count_tags            = options [:count_tags]
+    @count_tail            = options.fetch(:count_tail, false)
     @tail                  = options[:tail]
     @filtered_attributes   = options[:filtered_attributes] || []
     @tail_before_final_tag = options.fetch(:tail_before_final_tag, false)
@@ -62,7 +63,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   def init_parsing_state
     @truncated_string   = ""
     @closing_tags       = []
-    @estimated_length   = 0
+    @estimated_length   = @count_tail ? tail.length : 0
     @max_length_reached = false
   end
 

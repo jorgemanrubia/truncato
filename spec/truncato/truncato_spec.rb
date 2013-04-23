@@ -33,6 +33,20 @@ describe "Truncato" do
                        expected: "<div>some text 0</div><div><p>some text 1</p><p>som...</p></div>"
   end
 
+  describe "include tail as part of max_length" do
+    it_should_truncate "html text with a tag (counting tail)", with: {max_length: 4, count_tail: true, count_tags: false}, source: "<p>some text</p>", expected: "<p>s...</p>"
+
+    it_should_truncate "html text with a tag (counting tail)", with: {max_length: 6, count_tail: true, count_tags: false}, source: "<p>some text</p>", expected: "<p>som...</p>"
+
+    it_should_truncate "html text with a tag (counting tail)", with: {max_length: 16, count_tail: true, count_tags: false},
+                        source: "<p>some text</p><div><span>some other text</span></div>",
+                        expected: "<p>some text</p><div><span>some...</span></div>"
+
+    it_should_truncate "html text with a tag (counting tail and including tail before final tag)", with: {max_length: 16, count_tail: true, count_tags: false, tail_before_final_tag: true},
+                        source: "<p>some text</p><div><span>some other text</span></div>",
+                        expected: "<p>some text</p><div><span>some</span>...</div>"
+  end
+
   describe "insert tail between two or more final tags" do
     it_should_truncate "html text as normal when tail_before_final_tag option is not set",
                         with: {max_length: 4, count_tags: false},
