@@ -94,15 +94,13 @@ describe "Truncato" do
                        source: "<p attr1='&gt;some'>text</p>",
                        expected: "<p attr1='&gt;some'>tex...</p>"
 
-    it_should_truncate "html text with 2 attributes filtering one of them", with: {max_length: 30, count_tags: false, filtered_attributes: ['attr2']},
-                       source: "<p attr1='1'>some text</p>",
-                       expected: "<p attr1='1'>some text</p>"
+    it_should_truncate "html text with 2 attributes filtering one of them", with: {max_length: 90, count_tags: false, filtered_attributes: ['attr2']},
+                       source: "<p attr1='1'>some text</p><p attr2='2'>filtered text</p>",
+                       expected: "<p attr1='1'>some text</p><p>filtered text</p>"
 
     it_should_truncate "html text with 2 attributes filtering all of them", with: {max_length: 3, count_tags: false, filtered_attributes: ['attr1', 'attr2']},
                        source: "<p attr1='1' attr2='2'>some text</p>",
                        expected: "<p>som...</p>"
   end
 
-
 end
-
