@@ -34,7 +34,9 @@ describe "Truncato" do
   end
 
   describe "include tail as part of max_length" do
-    it_should_truncate "html text with a tag (counting tail)", with: {max_length: 4, count_tail: true, count_tags: false}, source: "<p>some text</p>", expected: "<p>s...</p>"
+    it_should_truncate "html text with a tag (counting tail)", with: {max_length: 4, count_tail: true, count_tags: false},
+                        source: "<p>some text</p>",
+                        expected: "<p>s...</p>"
 
     it_should_truncate "html text with a tag (counting tail)", with: {max_length: 6, count_tail: true, count_tags: false}, source: "<p>some text</p>", expected: "<p>som...</p>"
 

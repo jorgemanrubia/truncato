@@ -25,6 +25,7 @@ The configuration options are:
 * `filtered_attributes`: Array of attribute names that will be removed from the output. This allows you to make the truncated string shorter by excluding the content of attributes you can discard in some given context, e.g HTML `style` attribute.
 * `tail_before_final_tag`: Boolean value indicating whether to apply a tail before the final closing tag (`false` by default)
 * `comments`: Boolean value indicating whether to include comments in parsed results (`false` by default)
+* `count_tail`: Boolean value indicating whether to include the tail within the bounds of the provided max length (`false` by default)
 
 ## Performance
 
