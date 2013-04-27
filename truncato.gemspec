@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "truncato"
-  s.version = "0.7.4"
+  s.version = "0.7.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jorge Manrubia"]
-  s.date = "2013-04-14"
+  s.date = "2013-04-27"
   s.description = "Ruby tool for truncating HTML strings keeping a valid HTML markup"
   s.email = "jorge.manrubia@gmail.com"
   s.extra_rdoc_files = [
@@ -52,11 +52,15 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<bundler>, ["~> 1.3"])
       s.add_development_dependency(%q<bundler>, ["~> 1.3"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
+      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
+      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
     else
       s.add_dependency(%q<truncato>, [">= 0"])
       s.add_dependency(%q<nokogiri>, ["~> 1.5.5"])
       s.add_dependency(%q<htmlentities>, ["~> 4.3.1"])
       s.add_dependency(%q<bundler>, ["~> 1.3"])
+      s.add_dependency(%q<bundler>, ["~> 1.3"])
+      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_dependency(%q<bundler>, ["~> 1.3"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     end
@@ -65,6 +69,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<nokogiri>, ["~> 1.5.5"])
     s.add_dependency(%q<htmlentities>, ["~> 4.3.1"])
     s.add_dependency(%q<bundler>, ["~> 1.3"])
+    s.add_dependency(%q<bundler>, ["~> 1.3"])
+    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     s.add_dependency(%q<bundler>, ["~> 1.3"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
   end
