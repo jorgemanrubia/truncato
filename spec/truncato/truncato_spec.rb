@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe "Truncato" do
+  NBSP = Nokogiri::HTML("&nbsp;").text
+
   describe "normal strings" do
     #it_should_truncate "no html text with longer length", with: {max_length: 13, tail: '...'}, source: "some text", expected: "some text"
     #it_should_truncate "no html text with shorter length", with: {max_length: 3}, source: "some text", expected: "som..."
@@ -35,6 +37,9 @@ describe "Truncato" do
     it_should_truncate "htlm with unclosed tags", with: {max_length: 151},
                        source: "<table><tr><td>Hi <br> there</td></tr></table>",
                        expected: "<table><tr><td>Hi <br/> there</td></tr></table>"
+
+    it_should_truncate "sdasd", with: {},
+                       source: "<span>Foo&nbsp;Bar</span>", expected: "<span>Foo#{NBSP}Bar</span>"
   end
 
   describe "include tail as part of max_length" do
