@@ -34,7 +34,7 @@ describe "Truncato" do
                        source: "<div>some text 0</div><div><p>some text 1</p><p>some text 2</p></div>",
                        expected: "<div>some text 0</div><div><p>some text 1</p><p>som...</p></div>"
 
-    it_should_truncate "htlm with unclosed tags", with: {max_length: 151},
+    it_should_truncate "html with unclosed tags", with: {max_length: 151},
                        source: "<table><tr><td>Hi <br> there</td></tr></table>",
                        expected: "<table><tr><td>Hi <br/> there</td></tr></table>"
 
