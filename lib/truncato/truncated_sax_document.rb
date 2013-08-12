@@ -11,7 +11,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def start_element name, attributes
-    return if @max_length_reached || artificial_root_name?(name)
+    return if @max_length_reached || ignorable_element?(name)
     @closing_tags.push name unless single_tag_element? name
     append_to_truncated_string opening_tag(name, attributes), overriden_tag_length
   end
@@ -37,7 +37,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def end_element name
-    return if @max_length_reached || artificial_root_name?(name)
+    return if @max_length_reached || ignorable_element?(name)
     unless single_tag_element? name
       @closing_tags.pop
       append_to_truncated_string closing_tag(name), overriden_tag_length
@@ -72,7 +72,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def single_tag_element? name
-    ["br", "img"].include? name
+    %w{br img}.include? name
   end
 
   def append_to_truncated_string string, overriden_length=nil
@@ -83,7 +83,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   def opening_tag name, attributes
     attributes_string = attributes_to_string attributes
     if single_tag_element? name
-      "<#{name}#{attributes_string} />"
+      "<#{name}#{attributes_string}/>"
     else
       "<#{name}#{attributes_string}>"
     end
@@ -146,6 +146,10 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   def overriden_tag_length
     @count_tags ? nil : 0
+  end
+
+  def ignorable_element?(name)
+    artificial_root_name?(name) || %w(html head body).include?(name.downcase)
   end
 
   def artificial_root_name? name

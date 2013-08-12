@@ -31,7 +31,7 @@ module Truncato
 
   def self.do_truncate_html source, options
     truncated_sax_document = TruncatedSaxDocument.new(options)
-    parser = Nokogiri::XML::SAX::Parser.new(truncated_sax_document)
+    parser = Nokogiri::HTML::SAX::Parser.new(truncated_sax_document)
     parser.parse(source) { |context| context.replace_entities = false }
     truncated_string = truncated_sax_document.truncated_string
     truncated_string.empty? ? nil : truncated_string
