@@ -4,9 +4,9 @@ describe "Truncato" do
   NBSP = Nokogiri::HTML("&nbsp;").text
 
   describe "normal strings" do
-    #it_should_truncate "no html text with longer length", with: {max_length: 13, tail: '...'}, source: "some text", expected: "some text"
-    #it_should_truncate "no html text with shorter length", with: {max_length: 3}, source: "some text", expected: "som..."
-    it_should_truncate "no html text with longer length", with: {max_length: 4}, source: "some", expected: "some"
+    it_should_truncate "no html text with longer length", with: {max_length: 13, tail: '...'}, source: "some text", expected: "some text"
+    it_should_truncate "no html text with shorter length", with: {max_length: 3}, source: "some text", expected: "som..."
+    it_should_truncate "no html text with longer length", with: {max_length: 5}, source: "some", expected: "some"
   end
 
   describe "html tags structure" do
@@ -77,12 +77,12 @@ describe "Truncato" do
 
   describe "single html tag elements" do
     it_should_truncate "html text with <br /> element without adding a closing tag", with: {max_length: 9},
-                       source: "<div><p><br />some text 1</p><p>some text 2</p></div>",
-                       expected: "<div><p><br />...</p></div>"
+                       source: "<div><p><br/>some text 1</p><p>some text 2</p></div>",
+                       expected: "<div><p><br/>...</p></div>"
 
-    it_should_truncate "html text with <img /> element without adding a closing tag", with: {max_length: 9},
-                       source: "<div><p><img src='some_path' />some text 1</p><p>some text 2</p></div>",
-                       expected: "<div><p><img src='some_path' />...</p></div>"
+    it_should_truncate "html text with <img/> element without adding a closing tag", with: {max_length: 9},
+                       source: "<div><p><img src='some_path'/>some text 1</p><p>some text 2</p></div>",
+                       expected: "<div><p><img src='some_path'/>...</p></div>"
   end
 
   describe "comment html element" do
