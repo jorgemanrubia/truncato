@@ -3,11 +3,15 @@
 # Instead, edit Jeweler::Tasks in Rakefile, and run 'rake gemspec'
 # -*- encoding: utf-8 -*-
 
+$:.push File.expand_path("../lib", __FILE__)
+
+# Maintain your gem's version:
+require "truncato/version"
+
 Gem::Specification.new do |s|
   s.name = "truncato"
-  s.version = ""
+  s.version = Truncato::VERSION
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jorge Manrubia"]
   s.date = "2013-09-10"
   s.description = "Ruby tool for truncating HTML strings keeping a valid HTML markup"
@@ -16,90 +20,16 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.md"
   ]
-  s.files = [
-    ".ruby-version",
-    ".rvmrc",
-    "Gemfile",
-    "LICENSE.txt",
-    "README.md",
-    "Rakefile",
-    "benchmark/truncato/benchmark_runner.rb",
-    "benchmark/truncato/vendor/peppercorn_adapter.rb",
-    "benchmark/truncato/vendor/vendor_html_truncator_adapter.rb",
-    "benchmark/truncato_benchmark.rb",
-    "lib/truncato.rb",
-    "lib/truncato/truncated_sax_document.rb",
-    "lib/truncato/truncato.rb",
-    "lib/truncato/version.rb",
-    "spec/spec_helper.rb",
-    "spec/support/spec_helpers/truncato_macros.rb",
-    "spec/truncato/truncato_spec.rb",
-    "truncato.gemspec"
-  ]
+  s.files = Dir["{app,config,db,lib}/**/*", "LICENSE.txt", "Rakefile", "README.rdoc"]
   s.homepage = "https://github.com/jorgemanrubia/truncato"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "2.0.2"
   s.summary = "A tool for truncating HTML strings efficiently"
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 4
+  s.add_dependency "nokogiri", "~> 1.5.5"
+  s.add_dependency "htmlentities", "~> 4.3.1"
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<truncato>, [">= 0"])
-      s.add_runtime_dependency(%q<nokogiri>, ["~> 1.5.5"])
-      s.add_runtime_dependency(%q<htmlentities>, ["~> 4.3.1"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
-    else
-      s.add_dependency(%q<truncato>, [">= 0"])
-      s.add_dependency(%q<nokogiri>, ["~> 1.5.5"])
-      s.add_dependency(%q<htmlentities>, ["~> 4.3.1"])
-      s.add_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_dependency(%q<bundler>, ["~> 1.3"])
-      s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_dependency(%q<bundler>, ["~> 1.3"])
-    end
-  else
-    s.add_dependency(%q<truncato>, [">= 0"])
-    s.add_dependency(%q<nokogiri>, ["~> 1.5.5"])
-    s.add_dependency(%q<htmlentities>, ["~> 4.3.1"])
-    s.add_dependency(%q<bundler>, ["~> 1.3"])
-    s.add_dependency(%q<bundler>, ["~> 1.3"])
-    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-    s.add_dependency(%q<bundler>, ["~> 1.3"])
-    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-    s.add_dependency(%q<bundler>, ["~> 1.3"])
-    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-    s.add_dependency(%q<bundler>, ["~> 1.3"])
-    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-    s.add_dependency(%q<bundler>, ["~> 1.3"])
-    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-    s.add_dependency(%q<bundler>, ["~> 1.3"])
-    s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-    s.add_dependency(%q<bundler>, ["~> 1.3"])
-  end
+  s.add_development_dependency "rspec", '~> 2.14.1'
 end
 
