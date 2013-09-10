@@ -14,6 +14,7 @@ gem 'htmlentities', "~> 4.3.1"
 
 group :development do
   gem "bundler", "~> 1.3"
+  gem "rake", "~> 10.1.0"
 end
 
 group :test do
