@@ -2,6 +2,8 @@ require 'nokogiri'
 require 'htmlentities'
 
 class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
+  IGNORABLE_TAGS = %w(html head body)
+
   attr_reader :truncated_string, :max_length, :max_length_reached, :tail,
               :count_tags, :filtered_attributes, :filtered_tags, :ignored_levels
 
@@ -13,7 +15,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   def start_element name, attributes
     enter_ignored_level if filtered_tags.include?(name)
-    return if @max_length_reached || ignorable_element?(name) || ignore_mode?
+    return if @max_length_reached || ignorable_tag?(name) || ignore_mode?
     @closing_tags.push name unless single_tag_element? name
     append_to_truncated_string opening_tag(name, attributes), overriden_tag_length
   end
@@ -28,14 +30,8 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   def comment string
     if @comments
       return if @max_length_reached
-      remaining_length = max_length - @estimated_length - 1
-      string_to_append = comment_tag(string).length > remaining_length ? truncate_comment(comment_tag(string), remaining_length) : comment_tag(string)
-      append_to_truncated_string string_to_append
+      process_comment string
     end
-  end
-
-  def comment_tag comment
-    "<!--#{comment}-->"
   end
 
   def end_element name
@@ -44,7 +40,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
       return
     end
 
-    return if @max_length_reached || ignorable_element?(name) || ignore_mode?
+    return if @max_length_reached || ignorable_tag?(name) || ignore_mode?
 
     unless single_tag_element? name
       @closing_tags.pop
@@ -67,6 +63,16 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     @filtered_tags = options[:filtered_tags] || []
     @tail_before_final_tag = options.fetch(:tail_before_final_tag, false)
     @comments = options.fetch(:comments, false)
+  end
+
+  def process_comment(string)
+    remaining_length = max_length - @estimated_length - 1
+    string_to_append = comment_tag(string).length > remaining_length ? truncate_comment(comment_tag(string), remaining_length) : comment_tag(string)
+    append_to_truncated_string string_to_append
+  end
+
+  def comment_tag comment
+    "<!--#{comment}-->"
   end
 
   def init_parsing_state
@@ -158,8 +164,9 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     @count_tags ? nil : 0
   end
 
-  def ignorable_element?(name)
-    artificial_root_name?(name) || %w(html head body).include?(name.downcase)
+
+  def ignorable_tag?(name)
+    artificial_root_name?(name) || IGNORABLE_TAGS.include?(name.downcase)
   end
 
   def artificial_root_name? name
