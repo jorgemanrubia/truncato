@@ -4,6 +4,8 @@ require 'htmlentities'
 class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   IGNORABLE_TAGS = %w(html head body)
 
+  SINGLE_TAGS = %w{br img}
+
   attr_reader :truncated_string, :max_length, :max_length_reached, :tail,
               :count_tags, :filtered_attributes, :filtered_tags, :ignored_levels
 
@@ -88,7 +90,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def single_tag_element? name
-    %w{br img}.include? name
+    SINGLE_TAGS.include? name
   end
 
   def append_to_truncated_string string, overriden_length=nil
