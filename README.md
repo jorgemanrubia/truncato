@@ -13,8 +13,8 @@ gem 'truncato'
 ## Usage
 
 ```ruby
-Truncato.truncate "<p>some text</p>", max_length: 4 => "<p>s...</p>"
-Truncato.truncate "<p>some text</p>", max_length: 4, count_tags: false => "<p>some...</p>"
+Truncato.truncate "<p>some text</p>", max_length: 4 #=> "<p>s...</p>"
+Truncato.truncate "<p>some text</p>", max_length: 4, count_tags: false #=> "<p>some...</p>"
 ```
 
 The configuration options are:
