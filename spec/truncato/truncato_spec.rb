@@ -133,4 +133,18 @@ describe "Truncato" do
                        expected: "<p>som...</p>"
   end
 
+  describe "excluded tags" do
+    it_should_truncate "html text with a filtered tag", with: {max_length: 90, filtered_tags: %w(img)},
+                       source: "<p><img/>some text</p>",
+                       expected: "<p>some text</p>"
+
+    it_should_truncate "html text with a filtered tag with nested tags", with: {max_length: 90, filtered_tags: %w(table img)},
+                       source: "<div><table><tr>Hi there</tr></table>some text<img/></div>",
+                       expected: "<div>some text</div>"
+
+    it_should_truncate "html text with a filtered tag with nested tags where nested tags are filtered", with: {max_length: 90, filtered_tags: %w(table tr img)},
+                       source: "<div><table><tr><td>Hi there</td></tr></table>some text<img/></div>",
+                       expected: "<div>some text</div>"
+  end
+
 end

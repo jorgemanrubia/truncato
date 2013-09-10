@@ -2,7 +2,8 @@ require 'nokogiri'
 require 'htmlentities'
 
 class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
-  attr_reader :truncated_string, :max_length, :max_length_reached, :tail, :count_tags, :filtered_attributes
+  attr_reader :truncated_string, :max_length, :max_length_reached, :tail,
+              :count_tags, :filtered_attributes, :filtered_tags, :ignored_levels
 
   def initialize(options)
     @html_coder = HTMLEntities.new
@@ -11,13 +12,14 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def start_element name, attributes
-    return if @max_length_reached || ignorable_element?(name)
+    enter_ignored_level if filtered_tags.include?(name)
+    return if @max_length_reached || ignorable_element?(name) || ignore_mode?
     @closing_tags.push name unless single_tag_element? name
     append_to_truncated_string opening_tag(name, attributes), overriden_tag_length
   end
 
   def characters decoded_string
-    return if @max_length_reached
+    return if @max_length_reached || ignore_mode?
     remaining_length = max_length - @estimated_length - 1
     string_to_append = decoded_string.length > remaining_length ? truncate_string(decoded_string, remaining_length) : decoded_string
     append_to_truncated_string @html_coder.encode(string_to_append), string_to_append.length
@@ -37,7 +39,13 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def end_element name
-    return if @max_length_reached || ignorable_element?(name)
+    if filtered_tags.include?(name) && ignore_mode?
+      exit_ignored_level
+      return
+    end
+
+    return if @max_length_reached || ignorable_element?(name) || ignore_mode?
+
     unless single_tag_element? name
       @closing_tags.pop
       append_to_truncated_string closing_tag(name), overriden_tag_length
@@ -51,20 +59,22 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   private
 
   def capture_options(options)
-    @max_length            = options[:max_length]
-    @count_tags            = options [:count_tags]
-    @count_tail            = options.fetch(:count_tail, false)
-    @tail                  = options[:tail]
-    @filtered_attributes   = options[:filtered_attributes] || []
+    @max_length = options[:max_length]
+    @count_tags = options [:count_tags]
+    @count_tail = options.fetch(:count_tail, false)
+    @tail = options[:tail]
+    @filtered_attributes = options[:filtered_attributes] || []
+    @filtered_tags = options[:filtered_tags] || []
     @tail_before_final_tag = options.fetch(:tail_before_final_tag, false)
-    @comments              = options.fetch(:comments, false)
+    @comments = options.fetch(:comments, false)
   end
 
   def init_parsing_state
-    @truncated_string   = ""
-    @closing_tags       = []
-    @estimated_length   = @count_tail ? tail_length : 0
+    @truncated_string = ""
+    @closing_tags = []
+    @estimated_length = @count_tail ? tail_length : 0
     @max_length_reached = false
+    @ignored_levels = 0
   end
 
   def tail_length
@@ -158,5 +168,17 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   def append_tail_between_closing_tags
     append_to_truncated_string closing_tag(@closing_tags.delete_at (@closing_tags.length - 1)) if @closing_tags.length > 1
+  end
+
+  def enter_ignored_level
+    @ignored_levels += 1
+  end
+
+  def exit_ignored_level
+    @ignored_levels -= 1
+  end
+
+  def ignore_mode?
+    @ignored_levels > 0
   end
 end
