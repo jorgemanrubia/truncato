@@ -1,9 +1,9 @@
 module Truncato
   DEFAULT_OPTIONS = {
-      max_length: 30,
-      count_tags: true,
-      tail: "...",
-      filtered_attributes: []
+      :max_length => 30,
+      :count_tags => true,
+      :tail => "...",
+      :filtered_attributes => []
   }
 
   ARTIFICIAL_ROOT_NAME = '__truncato_root__'
