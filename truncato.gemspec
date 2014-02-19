@@ -27,10 +27,10 @@ Gem::Specification.new do |s|
   s.rubygems_version = "2.0.2"
   s.summary = "A tool for truncating HTML strings efficiently"
 
-  s.add_dependency "nokogiri", "~> 1.5.5"
+  s.add_dependency "nokogiri", "~> 1.6.1"
   s.add_dependency "htmlentities", "~> 4.3.1"
 
   s.add_development_dependency "rspec", '~> 2.14.1'
-  s.add_development_dependency "rake", '~> 10.1.0'
+  s.add_development_dependency "rake", '~> 10.1.1'
 end
 
