@@ -1,10 +1,12 @@
 module Truncato
-  DEFAULT_OPTIONS = {
+  DEFAULT_CHARACTER_OPTIONS = {
       max_length: 30,
       count_tags: true,
       tail: "...",
       filtered_attributes: []
   }
+
+  DEFAULT_BYTESIZE_OPTIONS = DEFAULT_CHARACTER_OPTIONS.merge({ count_tail: true })
 
   ARTIFICIAL_ROOT_NAME = '__truncato_root__'
 
@@ -19,7 +21,7 @@ module Truncato
   # @option user_options [Array<String>] :filtered_attributes Array of names of attributes that should be excluded in the resulting truncated string. This allows you to make the truncated string shorter by excluding the content of attributes you can discard in some given context, e.g HTML `style` attribute.
   # @return [String] the truncated string
   def self.truncate source, user_options={}
-    options = DEFAULT_OPTIONS.merge(user_options)
+    options = user_options[:max_bytes] ? DEFAULT_BYTESIZE_OPTIONS.merge(user_options) : DEFAULT_CHARACTER_OPTIONS.merge(user_options)
     self.do_truncate_html(source, options) ? self.do_truncate_html(with_artificial_root(source), options) : nil
   end
 

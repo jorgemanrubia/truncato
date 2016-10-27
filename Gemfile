@@ -9,8 +9,14 @@ gemspec
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
 
+# Required for cleaning up a string which has been bytesliced
+# https://github.com/hsbt/string-scrub
+gem 'string-scrub'
+
 group :development do
   gem "bundler", "~> 1.3"
+  gem "byebug"
+  gem "awesome_print"
 end
 
 group :benchrmark do
