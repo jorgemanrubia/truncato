@@ -8,6 +8,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    awesome_print (1.7.0)
+    byebug (9.0.6)
     diff-lcs (1.2.5)
     html_truncator (0.3.1)
       nokogiri (~> 1.5)
@@ -26,14 +28,21 @@ GEM
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.5)
+    string-scrub (0.1.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   bundler (~> 1.3)
+  byebug
   html_truncator
   peppercorn
   rake (~> 10.1.1)
   rspec (~> 2.14.1)
+  string-scrub
   truncato!
+
+BUNDLED WITH
+   1.13.5

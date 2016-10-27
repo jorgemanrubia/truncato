@@ -1,10 +1,12 @@
 module Truncato
-  DEFAULT_OPTIONS = {
+  DEFAULT_CHARACTER_OPTIONS = {
       max_length: 30,
       count_tags: true,
       tail: "...",
       filtered_attributes: []
   }
+
+  DEFAULT_BYTESIZE_OPTIONS = DEFAULT_CHARACTER_OPTIONS.merge({ count_tail: true })
 
   ARTIFICIAL_ROOT_NAME = '__truncato_root__'
 
@@ -19,15 +21,11 @@ module Truncato
   # @option user_options [Array<String>] :filtered_attributes Array of names of attributes that should be excluded in the resulting truncated string. This allows you to make the truncated string shorter by excluding the content of attributes you can discard in some given context, e.g HTML `style` attribute.
   # @return [String] the truncated string
   def self.truncate source, user_options={}
-    options = DEFAULT_OPTIONS.merge(user_options)
-    self.truncate_html(source, options) || self.truncate_no_html(source, options)
+    options = user_options[:max_bytes] ? DEFAULT_BYTESIZE_OPTIONS.merge(user_options) : DEFAULT_CHARACTER_OPTIONS.merge(user_options)
+    self.do_truncate_html(source, options) ? self.do_truncate_html(with_artificial_root(source), options) : nil
   end
 
   private
-
-  def self.truncate_html source, options
-    self.do_truncate_html(source, options) ? self.do_truncate_html(with_artificial_root(source), options) : nil
-  end
 
   def self.do_truncate_html source, options
     truncated_sax_document = TruncatedSaxDocument.new(options)
@@ -39,11 +37,5 @@ module Truncato
 
   def self.with_artificial_root(source)
     "<#{ARTIFICIAL_ROOT_NAME}>#{source}</#{ARTIFICIAL_ROOT_NAME}>"
-  end
-
-  def self.truncate_no_html source, options
-    max_length = options[:max_length]
-    tail = source.length > max_length ? options[:tail] : ''
-    "#{source[0..max_length-1]}#{tail}"
   end
 end
