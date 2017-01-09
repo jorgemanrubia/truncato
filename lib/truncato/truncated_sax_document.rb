@@ -176,7 +176,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def append_tail_between_closing_tags
-    append_to_truncated_string closing_tag(@closing_tags.delete_at (@closing_tags.length - 1)) if @closing_tags.length > 1
+    append_to_truncated_string closing_tag(@closing_tags.delete_at(@closing_tags.length - 1)) if @closing_tags.length > 1
   end
 
   def enter_ignored_level
