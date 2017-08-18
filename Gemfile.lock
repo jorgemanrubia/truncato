@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    truncato (0.7.9)
+    truncato (0.7.10)
       htmlentities (~> 4.3.1)
       nokogiri (~> 1.8.0, >= 1.7.0)
 
