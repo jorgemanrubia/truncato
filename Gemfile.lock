@@ -3,7 +3,7 @@ PATH
   specs:
     truncato (0.7.9)
       htmlentities (~> 4.3.1)
-      nokogiri (~> 1.7.0)
+      nokogiri (~> 1.8.0, >= 1.7.0)
 
 GEM
   remote: https://rubygems.org/
@@ -12,9 +12,9 @@ GEM
     html_truncator (0.4.1)
       nokogiri (~> 1.5)
     htmlentities (4.3.4)
-    mini_portile2 (2.1.0)
-    nokogiri (1.7.0.1)
-      mini_portile2 (~> 2.1.0)
+    mini_portile2 (2.2.0)
+    nokogiri (1.8.0)
+      mini_portile2 (~> 2.2.0)
     peppercorn (0.0.3)
       nokogiri (~> 1.5)
     rake (10.1.1)
@@ -39,4 +39,4 @@ DEPENDENCIES
   truncato!
 
 BUNDLED WITH
-   1.13.6
+   1.13.7
