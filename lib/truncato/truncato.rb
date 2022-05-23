@@ -6,7 +6,7 @@ module Truncato
       filtered_attributes: []
   }
 
-  ARTIFICIAL_ROOT_NAME = '__truncato_root__'
+  ARTIFICIAL_ROOT_NAME = 'truncato-artificial-root'
 
   # Truncates the source XML string and returns the truncated XML. It will keep a valid XML structure
   # and insert a _tail_ text indicating the position where content were removed (...).
