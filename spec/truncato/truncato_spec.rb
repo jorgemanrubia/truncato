@@ -14,6 +14,10 @@ describe "Truncato" do
                        with: { max_length: 8 },
                        source: 'Großer Übungs- und Beispieltext',
                        expected: 'Großer Ü...'
+    it_should_truncate 'with decomposed codes',
+                       with: { max_length: 8 },
+                       source: 'Großer Übungs- und Beispieltext'.unicode_normalize(:nfd),
+                       expected: 'Großer Ü...'
     it_should_truncate 'with multi-byte characters',
                        with: { max_length: 3, count_tags: false },
                        source: '<b>轉街過巷 就如滑過浪潮</b> 聽天說地 仍然剩我心跳',
