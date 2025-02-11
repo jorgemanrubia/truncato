@@ -18,6 +18,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.2-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.18.2-x86_64-linux-gnu)
+      racc (~> 1.4)
     peppercorn (0.0.3)
       nokogiri (~> 1.5)
     racc (1.8.1)
@@ -39,6 +41,7 @@ GEM
 PLATFORMS
   arm64-darwin-21
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   bundler

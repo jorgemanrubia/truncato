@@ -1,0 +1,32 @@
+name: Ruby
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "**" ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        ruby-version: ["2.6", "2.7", "3.0", "3.1.4"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: false # Doesn't play nice with regenerating platform matching Gemfile.lock, still fairly fast.
+
+    - name: Generate platform matching Gemfile.lock
+      run: rm -f Gemfile.lock && bundle install --jobs 4 --retry 3
+
+    - name: Run tests
+      run: bundle exec rake
