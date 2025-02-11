@@ -33,8 +33,7 @@ module Truncato
   def self.do_truncate_html source, options
     truncated_sax_document = TruncatedSaxDocument.new(options)
 
-    # Only nokogiri >= 1.17 accept Encoding object, older needs a String as encoding
-    parser = Nokogiri::HTML::SAX::Parser.new(truncated_sax_document, source.encoding.to_s)
+    parser = Nokogiri::HTML::SAX::Parser.new(truncated_sax_document, source.encoding)
     parser.parse(source) { |context| context.replace_entities = false }
     truncated_string = truncated_sax_document.truncated_string
     truncated_string.empty? ? nil : truncated_string
