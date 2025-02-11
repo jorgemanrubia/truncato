@@ -9,6 +9,28 @@ describe "Truncato" do
     it_should_truncate "no html text with longer length", with: {max_length: 5}, source: "some", expected: "some"
   end
 
+  describe 'unicode string' do
+    it_should_truncate 'text with non-ASCII characters',
+                       with: { max_length: 8 },
+                       source: 'Großer Übungs- und Beispieltext',
+                       expected: 'Großer Ü...'
+    it_should_truncate 'with decomposed codes',
+                       with: { max_length: 8 },
+                       source: 'Großer Übungs- und Beispieltext'.unicode_normalize(:nfd),
+                       expected: 'Großer Ü...'
+    it_should_truncate 'with multi-byte characters',
+                       with: { max_length: 3, count_tags: false },
+                       source: '<b>轉街過巷 就如滑過浪潮</b> 聽天說地 仍然剩我心跳',
+                       expected: '<b>轉街過...</b>'
+  end
+
+  describe 'non-unicode string' do
+    it_should_truncate 'text with non-unicode encodings',
+                       with: { max_length: 8 },
+                       source: 'Großer Übungs- und Beispieltext'.encode!(Encoding::ISO_8859_1),
+                       expected: 'Großer Ü...'
+  end
+
   describe "html tags structure" do
     it_should_truncate "html text with a tag (counting tags)", with: {max_length: 4}, source: "<p>some text</p>", expected: "<p>s...</p>"
 

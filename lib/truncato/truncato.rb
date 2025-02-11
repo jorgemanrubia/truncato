@@ -30,8 +30,22 @@ module Truncato
   end
 
   def self.do_truncate_html source, options
+    begin
+      source = source.unicode_normalize
+    rescue Encoding::CompatibilityError
+      # Only Unicode encodings can be normalized.
+      #
+      # Ruby docs:
+      # > In this context, 'Unicode Encoding' means any of UTF-8,
+      # > UTF-16BE/LE, and UTF-32BE/LE, as well as GB18030, UCS_2BE, and
+      # > UCS_4BE. Anything else than UTF-8 is implemented by converting
+      # > to UTF-8, which makes it slower than UTF-8.
+    end
+
     truncated_sax_document = TruncatedSaxDocument.new(options)
-    parser = Nokogiri::HTML::SAX::Parser.new(truncated_sax_document)
+
+    # Only nokogiri >= 1.17 accept Encoding object, older needs a String as encoding
+    parser = Nokogiri::HTML::SAX::Parser.new(truncated_sax_document, source.encoding.to_s)
     parser.parse(source) { |context| context.replace_entities = false }
     truncated_string = truncated_sax_document.truncated_string
     truncated_string.empty? ? nil : truncated_string
