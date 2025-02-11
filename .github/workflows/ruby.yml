@@ -35,7 +35,7 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: false # runs 'bundle install' and caches installed gems automatically
 
-    - name: Remove possibly existing lockfile
+    - name: Remove any existing lockfile
       run: rm -f Gemfile.lock
 
     - name: Install dependencies
