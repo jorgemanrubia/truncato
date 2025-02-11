@@ -6,7 +6,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
 
   SINGLE_TAGS = %w{br img}
 
-  attr_reader :truncated_string, :max_length, :max_length_reached, :tail,
+  attr_reader :max_length, :max_length_reached, :tail,
               :count_tags, :filtered_attributes, :filtered_tags, :ignored_levels
 
   def initialize(options)
@@ -54,6 +54,10 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     close_truncated_document if max_length_reached
   end
 
+  def truncated_string
+    @truncated_buffer.join
+  end
+
   private
 
   def capture_options(options)
@@ -78,7 +82,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def init_parsing_state
-    @truncated_string = ""
+    @truncated_buffer = []
     @closing_tags = []
     @estimated_length = @count_tail ? tail_length : 0
     @max_length_reached = false
@@ -94,7 +98,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def append_to_truncated_string string, overriden_length=nil
-    @truncated_string << string
+    @truncated_buffer << string
     increase_estimated_length(overriden_length || string.length)
   end
 
