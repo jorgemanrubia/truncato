@@ -33,13 +33,10 @@ jobs:
       uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
       with:
         ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: false # runs 'bundle install' and caches installed gems automatically
+        bundler-cache: false # Doesn't play nice with regenerating platform matching Gemfile.lock, still super fast.
 
-    - name: Remove any existing lockfile
-      run: rm -f Gemfile.lock
-
-    - name: Install dependencies
-      run: bundle install --jobs 4 --retry 3
+    - name: Generate platform matching Gemfile.lock
+      run: rm -f Gemfile.lock && bundle install
 
     - name: Run tests
       run: bundle exec rake
