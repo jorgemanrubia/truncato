@@ -16,7 +16,6 @@ jobs:
     strategy:
       matrix:
         ruby-version: ["2.6", "2.7", "3.0", "3.1.4"]
-        nokogiri: ["~> 1.16", "~> 1.17", "~> 1.18"]
 
     steps:
     - uses: actions/checkout@v4
@@ -27,10 +26,7 @@ jobs:
         bundler-cache: false # Doesn't play nice with regenerating platform matching Gemfile.lock, still fairly fast.
 
     - name: Generate platform matching Gemfile.lock
-      run: |
-        rm -f Gemfile.lock
-        bundle add nokogiri --version="${{ matrix.nokogiri }}"
-        bundle install
+      run: rm -f Gemfile.lock && bundle install --jobs 4 --retry 3
 
     - name: Run tests
       run: bundle exec rake
