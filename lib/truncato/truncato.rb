@@ -26,8 +26,15 @@ module Truncato
   private
 
   def self.truncate_html source, options
-    source = source.encoding == Encoding::UTF_8 ? source.unicode_normalize : source
+    source = unicode_normalize(source)
     self.do_truncate_html(source, options) ? self.do_truncate_html(with_artificial_root(source), options) : nil
+  end
+
+  def self.unicode_normalize(string)
+    string.unicode_normalize
+  rescue Encoding::CompatibilityError
+    # By relying on rescue we don't have to maintain a list of compatible encodings.
+    string
   end
 
   def self.do_truncate_html source, options
