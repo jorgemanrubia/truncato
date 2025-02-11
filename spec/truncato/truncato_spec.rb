@@ -24,7 +24,8 @@ describe "Truncato" do
                        expected: "<b>轉街過...</b>"
   end
 
-  describe "non-unicode string" do
+  # Support for non-UTF-8 only on ruby 3+.
+  describe "non-unicode string", if: Gem::Version.new(RUBY_VERSION).segments.first > 2 do
     it_should_truncate "text with non-unicode encodings",
                        with: { max_length: 8 },
                        source: "Großer Übungs- und Beispieltext".encode!(Encoding::ISO_8859_1),
