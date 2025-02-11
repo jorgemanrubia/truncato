@@ -68,5 +68,3 @@ The results comparing truncato with other libs:
 ```ruby
 rake spec
 ```
-
-
