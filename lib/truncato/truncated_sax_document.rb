@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'nokogiri'
 require 'htmlentities'
 
@@ -78,7 +80,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def comment_tag comment
-    "<!--#{comment}-->"
+    "<!--#{comment}-->".dup
   end
 
   def init_parsing_state
@@ -87,6 +89,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
     @estimated_length = @count_tail ? tail_length : 0
     @max_length_reached = false
     @ignored_levels = 0
+    @tail_appended = false
   end
 
   def tail_length
@@ -105,9 +108,9 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   def opening_tag name, attributes
     attributes_string = attributes_to_string attributes
     if single_tag_element? name
-      "<#{name}#{attributes_string}/>"
+      "<#{name}#{attributes_string}/>".dup
     else
-      "<#{name}#{attributes_string}>"
+      "<#{name}#{attributes_string}>".dup
     end
   end
 
@@ -118,7 +121,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def concatenate_attributes_declaration attributes
-    attributes.inject(' ') do |string, attribute|
+    attributes.inject(' '.dup) do |string, attribute|
       key, value = attribute
       next string if @filtered_attributes.include? key
       string << "#{key}='#{@html_coder.encode value}' "
@@ -126,7 +129,7 @@ class TruncatedSaxDocument < Nokogiri::XML::SAX::Document
   end
 
   def closing_tag name
-    "</#{name}>"
+    "</#{name}>".dup
   end
 
   def increase_estimated_length amount
