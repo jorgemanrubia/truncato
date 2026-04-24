@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Adapter for comparing https://github.com/nono/HTML-Truncator
 module Truncato
   class VendorHtmlTruncatorAdapter

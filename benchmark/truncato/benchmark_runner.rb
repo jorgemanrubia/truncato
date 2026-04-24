@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Truncato
   class BenchmarkRunner
     SYNTHETIC_XML_LENGTH = 4000000
@@ -27,7 +29,7 @@ module Truncato
     end
 
     def create_synthetic_xml(length)
-      xml_content = "<synthetic-root>"
+      xml_content = "<synthetic-root>".dup
       append_random_xml_content xml_content, length
       xml_content << "</synthetic-root>"
       xml_content
@@ -43,7 +45,7 @@ module Truncato
     end
 
     def random_string(length)
-      (0...length).map { 65.+(rand(26)).chr }.join
+      (0...length).map { 65.+(rand(26)).chr }.join.dup
     end
 
     def run_with(truncation_klass)

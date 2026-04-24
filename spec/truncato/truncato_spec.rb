@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe "Truncato" do
@@ -16,7 +18,7 @@ describe "Truncato" do
                        expected: "Großer Ü..."
     it_should_truncate "with decomposed codes",
                        with: { max_length: 8 },
-                       source: "Großer Übungs- und Beispieltext".unicode_normalize(:nfd),
+                       source: "Großer Übungs- und Beispieltext".dup.unicode_normalize(:nfd),
                        expected: "Großer Ü..."
     it_should_truncate "with multi-byte characters",
                        with: { max_length: 3, count_tags: false },
@@ -28,7 +30,7 @@ describe "Truncato" do
   describe "non-unicode string", if: Gem::Version.new(RUBY_VERSION).segments.first > 2 do
     it_should_truncate "text with non-unicode encodings",
                        with: { max_length: 8 },
-                       source: "Großer Übungs- und Beispieltext".encode!(Encoding::ISO_8859_1),
+                       source: "Großer Übungs- und Beispieltext".dup.encode!(Encoding::ISO_8859_1),
                        expected: "Großer Ü..."
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Truncato
   DEFAULT_OPTIONS = {
       max_length: 30,
@@ -49,12 +51,12 @@ module Truncato
   end
 
   def self.with_artificial_root(source)
-    "<#{ARTIFICIAL_ROOT_NAME}>#{source}</#{ARTIFICIAL_ROOT_NAME}>"
+    "<#{ARTIFICIAL_ROOT_NAME}>#{source}</#{ARTIFICIAL_ROOT_NAME}>".dup
   end
 
   def self.truncate_no_html source, options
     max_length = options[:max_length]
     tail = source.length > max_length ? options[:tail] : ''
-    "#{source[0..max_length-1]}#{tail}"
+    "#{source[0..max_length-1]}#{tail}".dup
   end
 end

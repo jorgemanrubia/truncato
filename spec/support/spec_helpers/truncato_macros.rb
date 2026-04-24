@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TruncatoMacros
   def it_should_truncate(example_description, options)
     it "should truncate #{example_description}" do
